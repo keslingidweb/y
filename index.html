@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CTPS — Untuk Hidup Sehat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Chart.js (untuk grafik yang rapi) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Firebase (versi compat — bekerja tanpa module; cocok untuk file://) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+</head>
+<body data-theme="light">
+  <!-- NAVBAR -->
+  <header>
+    <nav class="navbar container">
+      <div class="brand">
+        <div class="logo">🧼</div>
+        <div>
+          <div style="font-size:14px">CTPS</div>
+          <div style="font-size:12px;color:var(--muted);font-weight:500">UNTUK HIDUP SEHAT</div>
+        </div>
+      </div>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#" data-section="home">Home</a>
+        <a href="#" data-section="materi">Materi</a>
+        <a href="#" data-section="langkah">Langkah</a>
+        <a href="#" data-section="tips">Tips</a>
+        <a href="#" data-section="quiz">Quiz</a>
+        <a href="#" data-section="video">Video</a>
+        <a href="#" data-section="tentang">Tentang</a>
+        <a href="#" data-section="masukan">Masukan</a>
+      </div>
+
+      <div class="controls">
+        <div class="toggle" id="themeToggle">
+          <div style="font-size:12px;font-weight:700;color:var(--muted)">Mode</div>
+          <div class="dot"></div>
+        </div>
+        <button class="hamburger" id="hambtn" aria-label="Menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="home" class="section active">
+      <div class="hero container">
+        <h1>CTPS — Cuci Tangan Pakai Sabun</h1>
+        <p>Praktik sederhana yang menyelamatkan nyawa semua umur.<br><b>Your Hygiene, Your Health</b></p>
+        <div class="cta">
+          <button class="btn btn-primary" id="simBtn">Mulai Simulasi 20s</button>
+          <button class="btn btn-outline" id="openQuizBtn">Kerjakan Quiz</button>
+        </div>
+        <div class="sim-row">
+          <div class="progress-wrap">
+            <div class="progress-bar" id="simProgress"></div>
+          </div>
+          <div id="simTime" class="small">20s</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MATERI -->
+    <section id="materi" class="section hidden container">
+      <div class="card">
+        <h2>Apa Itu CTPS?</h2>
+        <p>
+          Menurut para ahli kesehatan, <b>Cuci Tangan Pakai Sabun (CTPS)</b> merupakan salah satu perilaku hidup bersih dan sehat (PHBS) yang sangat penting dalam mencegah berbagai penyakit berbasis lingkungan. CTPS berfungsi menghilangkan kotoran dan mikroorganisme berbahaya yang menempel di tangan setelah melakukan aktivitas seperti buang air, membersihkan anak, atau sebelum makan. Dengan membiasakan CTPS, seseorang dapat menurunkan risiko penyakit menular seperti <b>diare, kolera, dan tifus</b>, yang umumnya disebabkan oleh kontaminasi kuman dari tangan ke makanan atau air yang dikonsumsi.
+        </p>
+        <p>
+          Menurut <b>World Health Organization (WHO)</b>, mencuci tangan dengan sabun di bawah air mengalir adalah langkah paling efektif untuk mencegah penyebaran penyakit yang ditularkan melalui jalur fekal-oral. WHO menekankan bahwa CTPS mampu menurunkan kejadian <b>diare hingga 40% dan infeksi saluran pernapasan hingga 20%</b>, karena sabun berfungsi menghancurkan dinding lemak pada virus dan bakteri penyebab penyakit. Kebiasaan ini menjadi salah satu pilar utama dalam upaya kesehatan masyarakat global, termasuk dalam program <b>Sanitasi Total Berbasis Masyarakat (STBM)</b> yang diterapkan di Indonesia.
+        </p>
+        <p>
+          Dalam konteks <b>STBM</b>, CTPS merupakan <b>pilar keempat</b> dari lima pilar utama yang berfokus pada perubahan perilaku masyarakat agar lebih sadar terhadap pentingnya sanitasi dan kebersihan. STBM menekankan bahwa keberhasilan sanitasi total tidak hanya ditentukan oleh tersedianya sarana seperti jamban sehat, tetapi juga oleh perilaku higienis sehari-hari, termasuk mencuci tangan dengan sabun pada lima waktu penting. Dengan mengintegrasikan CTPS ke dalam kehidupan sehari-hari, masyarakat dapat mencegah penyakit berbasis lingkungan secara berkelanjutan dan mendukung terwujudnya lingkungan yang sehat, bersih, serta produktif.
+        </p>
+        <div class="grid cards-3" style="margin-top:14px">
+          <div class="card tip"><h3>🧼 Bersih dari Kuman</h3><p>Mengurangi kuman penyebab penyakit.</p></div>
+          <div class="card tip"><h3>👨‍👩‍👧 Untuk Semua Umur</h3><p>Dari anak-anak hingga lansia.</p></div>
+          <div class="card tip"><h3>🌍 Hidup Lebih Sehat</h3><p>Kebiasaan kecil berdampak besar.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LANGKAH -->
+<!-- GAMBAR EDUKASI CTPS -->
+<section id="poster" class="section hidden container">
+  <div class="card gambar-ctps">
+    <h2>Poster Edukasi CTPS</h2>
+    <img src="images/2.jpg" alt="Biasakan Cuci Tangan Pakai Sabun" class="poster-ctps">
+  </div>
+</section>
+
+    <section id="langkah" class="section hidden container">
+      <div class="card">
+        <h2>Tata Cara Cuci Tangan Pakai Sabun (CTPS)</h2>
+        <p>
+          <b>Tata Cara Cuci Tangan Pakai Sabun (CTPS)</b> merupakan langkah penting untuk memastikan tangan benar-benar bersih dari kuman dan mikroorganisme penyebab penyakit. Menurut para ahli dan pedoman dari <b>World Health Organization (WHO)</b>, mencuci tangan tidak hanya sekadar membasahi tangan dengan air, tetapi juga harus dilakukan dengan urutan dan durasi yang tepat agar efektif. Proses CTPS yang benar dapat membantu menghilangkan kotoran, minyak, serta patogen penyebab penyakit seperti diare, flu, dan infeksi saluran pernapasan yang sering berpindah melalui sentuhan tangan. Kebiasaan mencuci tangan dengan teknik yang benar juga mendukung penerapan pilar <b>Sanitasi Total Berbasis Masyarakat (STBM)</b>, khususnya dalam membangun perilaku hidup bersih dan sehat di lingkungan rumah, sekolah, maupun masyarakat.
+        </p>
+        <h3><b>Tata Cara CTPS (WHO):</b></h3>
+        <ol>
+          <li><b>Basahi tangan</b> dengan air bersih yang mengalir.</li>
+          <li><b>Gunakan sabun</b> secukupnya untuk menutupi seluruh permukaan tangan.</li>
+          <li><b>Gosok telapak tangan, punggung tangan, sela-sela jari, dan kuku</b> selama kurang lebih <b>20 detik</b>.</li>
+          <li><b>Bilas tangan</b> hingga benar-benar bersih di bawah air mengalir.</li>
+          <li><b>Keringkan tangan</b> menggunakan <b>handuk bersih atau tisu sekali pakai</b> agar tidak terkontaminasi kembali.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- TIPS -->
+    <section id="tips" class="section hidden container">
+      <div class="card">
+        <h2>🕒 Kapan Harus Cuci Tangan & Tips</h2>
+        <p>
+          Menjaga kebersihan tangan melalui <b>Cuci Tangan Pakai Sabun (CTPS)</b> sangat penting dilakukan pada waktu-waktu tertentu untuk mencegah penularan penyakit. Banyak kuman dan bakteri berpindah melalui tangan saat seseorang beraktivitas sehari-hari — seperti setelah menggunakan toilet, menyentuh hewan, atau sebelum makan. Oleh karena itu, mengenali <b>kapan harus mencuci tangan</b> dan menerapkan kebiasaan ini secara konsisten dapat menurunkan risiko penyakit berbasis lingkungan, seperti diare, infeksi saluran pernapasan, dan penyakit kulit. Selain itu, membiasakan CTPS juga membantu mendukung keberhasilan program <b>Sanitasi Total Berbasis Masyarakat (STBM)</b> dalam menciptakan lingkungan yang lebih sehat.
+        </p>
+        <hr />
+        <h3>🕒 Kapan?</h3>
+        <ul>
+          <li>Sebelum makan</li>
+          <li>Setelah dari toilet</li>
+          <li>Setelah memegang hewan</li>
+          <li>Setelah batuk atau bersin</li>
+        </ul>
+        <h3>💡 Tips Praktis</h3>
+        <ul>
+          <li>Bawa sabun cair kecil saat bepergian</li>
+          <li>Ajarkan anak mencuci tangan sambil menyanyikan lagu 20 detik</li>
+          <li>Gunakan hand sanitizer jika tidak tersedia air dan sabun</li>
+        </ul>
+        <div class="fun-fact"><b>🧼 Fun Fact:</b> Mencuci tangan selama <b>20 detik</b> dapat <b>menurunkan risiko diare hingga 40%!</b></div>
+      </div>
+    </section>
+
+  <section id="quiz" class="section hidden container">
+  <div class="card quiz-box">
+    <h2>Quiz CTPS Interaktif</h2>
+    <p class="quiz-desc">
+      Yuk ikuti kuis interaktif yang seru ini! Melalui permainan sederhana namun penuh pengetahuan,
+      kamu bisa belajar pentingnya mencuci tangan pakai sabun dengan cara yang asyik dan menyenangkan.
+      Selain menambah wawasan, kuis ini juga membantu membentuk kebiasaan hidup bersih dan sehat agar
+      kita selalu terlindungi dari berbagai penyakit!
+    </p>
+
+    <hr class="divider" />
+
+    <p class="quiz-note">
+      🕒 Jawab dengan cepat! Setiap soal hanya <b>10 detik</b>.<br />
+      Lihat hasil skor dan grafik rata-rata di akhir.
+    </p>
+
+    <!-- input nama pemain (wajib sebelum mulai) -->
+    <div id="playerEntry" style="margin:12px 0; text-align:center;">
+      <input id="playerName" placeholder="Tulis nama kamu di sini..." style="padding:8px 10px; border-radius:8px; border:1px solid #ccc; width:70%; max-width:320px; font-weight:600;" />
+      <button id="confirmNameBtn" class="btn btn-primary" style="margin-left:8px;">Konfirmasi</button>
+      <div id="nameWarn" class="small" style="color:#e53935; margin-top:8px; display:none;">Nama wajib diisi sebelum mulai kuis.</div>
+    </div>
+
+    <p id="timerText" class="small">⏱️ Waktu: <span id="timerNum">10</span>s</p>
+    <p id="question">Klik <b>Mulai</b> untuk memulai kuis.</p>
+
+    <div id="options"></div>
+
+    <div class="quiz-btn">
+      <button id="startQuizBtn" class="btn btn-primary">Mulai</button>
+      <button id="restartQuizBtn" class="replay" style="display:none">Ulangi Kuis</button>
+    </div>
+
+    <canvas id="scoreChart" style="display:none;max-width:400px;margin:auto;margin-top:20px;"></canvas>
+
+    <!-- AREA HASIL: teks ringkasan, rata-rata waktu dan jumlah pemain -->
+    <div id="resultSummary" style="margin-top:12px; text-align:center;"></div>
+
+    <!-- LEADERBOARD otomatis muncul di bawah grafik hasil -->
+    <div id="leaderboardWrap" style="margin-top:18px;"></div>
+  </div>
+</section>
+
+
+  <!-- VIDEO -->
+<section id="video" class="section container">
+  <div class="card">
+    <h2>🎥 Video Edukasi CTPS</h2>
+    <p class="video-subtitle">Kumpulan video edukasi tentang Cuci Tangan Pakai Sabun (CTPS) dari berbagai sumber WHO, Kemenkes, dan edukator kesehatan.</p>
+    <div class="video-vertical">
+      <!-- 20 Video CTPS -->
+       <iframe src="https://www.youtube.com/embed/nH14sS3pWUo"
+        title="CTPS - Cuci Tangan Pakai Sabun WHO"
+        allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/h-ZiQvqNfMc" title="Cara Cuci Tangan Benar" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/ItTolApNrqo" title="Opsi Sarana CTPS" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/GPzFRjsnhL8" title="Gerakan Serentak CTPS" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/BUW3FsEd6dE" title="CTPS di Sekolah" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/rPPTzgob7KI" title="CTPS 20 Detik" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/PHGnD6WvDRA" title="6 Langkah CTPS" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/GYHU0Qxx7r0" title="Motion Call to Action CTPS" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/TBOdMNSiPG4" title="Hari Cuci Tangan Sedunia" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/VRygGxZdCzQ" title="Hari CTPS 2024" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/Jg8S09oHmpE" title="6 Steps Washing Hands (WHO)" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/DzUpp6C2ySg" title="Edukasi Pentingnya CTPS" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/OehyhZNRqg8" title="Video CTPS Umum" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/4KeydekcKMo" title="6 Langkah CTPS DKI" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/InAamcHw8ro" title="CTPS Air Mengalir" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/tK48UXBXaVk" title="Opsi Sarana CTPS SD" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/l1BlM4TO2u0" title="Animasi CTPS Anak" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/ThmQ-tw64qQ" title="Pemicuan CTPS" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/m2ao2EeHMkU" title="6 Langkah WHO" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/T9MRtPl2zLU" title="Cuci Tangan dengan Air Mengalir" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+
+    <!-- TENTANG -->
+    <section id="tentang" class="section hidden container">
+      <div class="card">
+        <h2>Tentang Aplikasi</h2>
+        <p>Aplikasi ini dibuat untuk edukasi kebersihan tangan dan kesehatan masyarakat berdasarkan panduan WHO dan Kementerian Kesehatan (Kemenkes). Aplikasi ini berfungsi sebagai media pembelajaran interaktif yang membantu masyarakat memahami pentingnya Cuci Tangan Pakai Sabun (CTPS) dalam mencegah penyakit berbasis lingkungan. Aplikasi ini diciptakan oleh kami mahasiswa Jurusan Kesehatan Lingkungan Poltekkes Kemenkes Tanjungkarang semester 5 sebagai bentuk inovasi edukatif dalam mendukung perilaku hidup bersih dan sehat di lingkungan sekolah maupun masyarakat.
+</p>
+      </div>
+    </section>
+
+<!-- ===== START: MASUKAN (tambahkan sebelum <footer>) ===== -->
+<section id="masukan" class="section hidden container">
+  <div class="card">
+    <h2>💬 Masukan & Saran</h2>
+    <p>Silakan berikan saran atau pendapatmu untuk pengembangan aplikasi CTPS ini.</p>
+
+    <form id="feedbackForm" class="feedback-form">
+      <input type="text" id="fbName" placeholder="Nama kamu (opsional)" />
+      <textarea id="fbMessage" placeholder="Tulis masukan atau saran kamu di sini..." required></textarea>
+      <button type="submit" class="btn btn-primary">Kirim</button>
+    </form>
+
+    <div id="feedbackNotice" class="feedback-notice" style="display:none;">
+      ✅ Terima kasih atas masukannya!
+    </div>
+
+    <div id="feedbackList" class="feedback-list">
+      <p class="small center">Belum ada masukan. Jadilah yang pertama!</p>
+    </div>
+  </div>
+</section>
+<!-- ===== END: MASUKAN ===== -->
+
+
+    <footer>
+      <p>“CTPS, langkah kecil yang menyelamatkan banyak jiwa.”</p>
+      <p>© <span id="year"></span> CTPS Untuk Hidup Sehat</p>
+    </footer>
+  </main>
+
+  <!-- script utama (non-module) -->
+  <script src="script.js"></script>
+</body>
+</html>
+
+<div class="toggle">
+  <div class="dot"></div>
+</div>
